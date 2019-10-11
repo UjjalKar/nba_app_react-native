@@ -6,7 +6,7 @@ const Index = () => {
   const Nav = RootNavigator();
   return (
     <>
-      <StatusBar backgroundColor="white" barStyle="dark-content" />
+      <StatusBar backgroundColor="#1d428a" barStyle="dark-content" />
       <SafeAreaView style={styles.container}>
         <Nav />
       </SafeAreaView>
