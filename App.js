@@ -1,31 +1,23 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import {Provider} from 'react-redux';
+import {createStore, applyMiddleware, compose} from 'redux';
+import promiseMiddleware from 'redux-promise';
+
+import reducers from './app/store/reducers';
+import Index from './app/index';
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const createStoreWithMiddleware = createStore(
+  reducers,
+  composeEnhancers(applyMiddleware(promiseMiddleware)),
+);
 
 const App = () => {
   return (
-    <>
-      <StatusBar backgroundColor="white" barStyle="dark-content" />
-      <SafeAreaView style={styles.container}>
-        <Text>Hello React</Text>
-      </SafeAreaView>
-    </>
+    <Provider store={createStoreWithMiddleware}>
+      <Index />
+    </Provider>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-  },
-});
 
 export default App;
