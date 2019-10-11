@@ -24,6 +24,7 @@ const AuthComponent = () => {
       <ScrollView style={styles.container}>
         <View>
           <AuthLogo />
+          <AuthForm />
         </View>
       </ScrollView>
     );
