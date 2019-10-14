@@ -10,29 +10,34 @@ import {
 import AuthLogo from './authLogo';
 import AuthForm from './authForm';
 
-const AuthComponent = props => {
-  const [loading, setLoading] = useState(false);
-
-  const goNext = props => {
-    props.navigation.navigate('App');
+class AuthComponent extends React.Component {
+  state = {
+    loading: false,
   };
-  if (loading) {
-    return (
-      <View style={styles.loading}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  } else {
-    return (
-      <ScrollView style={styles.container}>
-        <View>
-          <AuthLogo />
-          <AuthForm goNext={goNext(props)} />
+
+  goNext = () => {
+    this.props.navigation.navigate('App');
+  };
+
+  render() {
+    if (this.state.loading) {
+      return (
+        <View style={styles.loading}>
+          <ActivityIndicator size="large" />
         </View>
-      </ScrollView>
-    );
+      );
+    } else {
+      return (
+        <ScrollView style={styles.container}>
+          <View>
+            <AuthLogo />
+            <AuthForm goNext={this.goNext} />
+          </View>
+        </ScrollView>
+      );
+    }
   }
-};
+}
 
 const styles = StyleSheet.create({
   loading: {
