@@ -6,6 +6,7 @@ import promiseMiddleware from 'redux-promise';
 import reducers from './app/store/reducers';
 import Index from './app/index';
 
+// Form reuseable inputs last did
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const createStoreWithMiddleware = createStore(
   reducers,

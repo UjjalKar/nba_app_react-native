@@ -10,9 +10,12 @@ import {
 import AuthLogo from './authLogo';
 import AuthForm from './authForm';
 
-const AuthComponent = () => {
+const AuthComponent = props => {
   const [loading, setLoading] = useState(false);
 
+  const goNext = props => {
+    props.navigation.navigate('App');
+  };
   if (loading) {
     return (
       <View style={styles.loading}>
@@ -24,7 +27,7 @@ const AuthComponent = () => {
       <ScrollView style={styles.container}>
         <View>
           <AuthLogo />
-          <AuthForm />
+          <AuthForm goNext={goNext(props)} />
         </View>
       </ScrollView>
     );
