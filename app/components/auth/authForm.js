@@ -74,7 +74,36 @@ export class AuthForm extends Component {
       actionMode: type === 'Login' ? 'I want to Login' : 'I want to register',
     });
   };
-  submitUser = () => {};
+  submitUser = () => {
+    let isFormValid = true;
+    let formToSubmit = {};
+    const formCopy = this.state.form;
+
+    for (let key in formCopy) {
+      if (this.state.type === 'Login') {
+        //  Login
+        if (key !== 'confirmPassword') {
+          isFormValid = isFormValid && formCopy[key].value;
+          formToSubmit[key] = formCopy[key].value;
+        }
+      } else {
+        isFormValid = isFormValid && formCopy[key].value;
+        formToSubmit[key] = formCopy[key].value;
+      }
+    }
+
+    if (isFormValid) {
+      if (this.state.type === 'Login') {
+        console.warn(formCopy);
+      } else {
+        console.warn(formCopy);
+      }
+    } else {
+      this.setState({
+        hasError: true,
+      });
+    }
+  };
 
   render() {
     return (
