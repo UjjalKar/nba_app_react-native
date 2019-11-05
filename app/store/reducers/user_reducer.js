@@ -1,10 +1,26 @@
+import {SIGN_IN, SIGN_UP} from '../types';
+
 const userReducer = (state = {}, action) => {
   switch (action.type) {
-    case 'SIGN_IN':
-      return {};
+    case SIGN_IN:
+      return {
+        ...state,
+        auth: {
+          email: action.payload.email || false,
+          token: action.payload.token || false,
+        },
+      };
+    case SIGN_UP:
+      return {
+        ...state,
+        auth: {
+          email: action.payload.email || false,
+          token: action.payload.token || false,
+        },
+      };
     default:
       return state;
   }
 };
-
+// Using Redux Before Server : 6:26
 export default userReducer;

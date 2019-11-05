@@ -10,6 +10,10 @@ import {
 import Input from '../../utils/forms/input';
 import ValidationRules from '../../utils/forms/validationRules';
 
+import {connect} from 'react-redux';
+import {signUp, signIn} from '../../store/actions/users_action';
+import {bindActionCreators} from 'redux';
+
 export class AuthForm extends Component {
   state = {
     type: 'Login',
@@ -94,9 +98,9 @@ export class AuthForm extends Component {
 
     if (isFormValid) {
       if (this.state.type === 'Login') {
-        console.warn(formCopy);
+        this.props.signIn(formToSubmit);
       } else {
-        console.warn(formCopy);
+        this.props.signUp(formToSubmit);
       }
     } else {
       this.setState({
@@ -201,4 +205,19 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AuthForm;
+function mapStateToProps(state) {
+  console.log(state);
+
+  return {
+    User: state.User,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({signIn, signUp}, dispatch);
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AuthForm);
