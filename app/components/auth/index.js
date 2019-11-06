@@ -10,14 +10,37 @@ import {
 import AuthLogo from './authLogo';
 import AuthForm from './authForm';
 
+import {connect} from 'react-redux';
+import {autoSignIn} from '../../store/actions/users_action';
+import {bindActionCreators} from 'redux';
+
+import {setTokens, getTokens} from '../../utils/misc';
 class AuthComponent extends React.Component {
   state = {
-    loading: false,
+    loading: true,
   };
 
   goNext = () => {
     this.props.navigation.navigate('App');
   };
+
+  componentDidMount() {
+    getTokens(value => {
+      if (value[0][1] === null) {
+        this.setState({loading: false});
+      } else {
+        this.props.autoSignIn(value[1][1]).then(() => {
+          if (!this.props.User.auth.token) {
+            this.setState({loading: false});
+          } else {
+            setTokens(this.User.auth, () => {
+              this.goNext();
+            });
+          }
+        });
+      }
+    });
+  }
 
   render() {
     if (this.state.loading) {
@@ -54,4 +77,17 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AuthComponent;
+function mapStateToProps(state) {
+  return {
+    User: state.User,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({autoSignIn}, dispatch);
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AuthComponent);

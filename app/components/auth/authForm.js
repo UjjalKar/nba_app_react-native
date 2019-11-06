@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import Input from '../../utils/forms/input';
 import ValidationRules from '../../utils/forms/validationRules';
-
+import {setTokens} from '../../utils/misc';
 import {connect} from 'react-redux';
 import {signUp, signIn} from '../../store/actions/users_action';
 import {bindActionCreators} from 'redux';
@@ -78,6 +78,18 @@ export class AuthForm extends Component {
       actionMode: type === 'Login' ? 'I want to Login' : 'I want to register',
     });
   };
+
+  manageAccess = () => {
+    if (!this.props.User.auth.uid) {
+      this.setState({hasErrors: true});
+    } else {
+      setTokens(this.props.User.auth, () => {
+        this.setState({hasErrors: false});
+        this.props.goNext();
+      });
+    }
+  };
+
   submitUser = () => {
     let isFormValid = true;
     let formToSubmit = {};
@@ -98,9 +110,13 @@ export class AuthForm extends Component {
 
     if (isFormValid) {
       if (this.state.type === 'Login') {
-        this.props.signIn(formToSubmit);
+        this.props.signIn(formToSubmit).then(() => {
+          this.manageAccess();
+        });
       } else {
-        this.props.signUp(formToSubmit);
+        this.props.signUp(formToSubmit).then(() => {
+          this.manageAccess();
+        });
       }
     } else {
       this.setState({
